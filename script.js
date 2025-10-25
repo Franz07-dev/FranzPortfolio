@@ -62,3 +62,31 @@ themeToggle.addEventListener('click', () => {
     localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
     themeToggle.innerHTML = isLightMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
 });
+// Initialize EmailJS
+emailjs.init("AxWNH52yE1CnPWHUg");
+
+// Handle contact form submission
+document.getElementById('contact-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const submitButton = event.target.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    
+    // Show loading state
+    submitButton.textContent = 'Sending...';
+    submitButton.disabled = true;
+    
+    // Send email
+    emailjs.sendForm('service_sg4dunb', 'template_gyzyeft', this)
+        .then(function(response) {
+            alert('Message sent successfully! I will get back to you soon.');
+            submitButton.textContent = originalText;
+            submitButton.disabled = false;
+            document.getElementById('contact-form').reset();
+        }, function(error) {
+            alert('Failed to send message. Please try again or email me directly at franzjeromeverano@gmail.com');
+            submitButton.textContent = originalText;
+            submitButton.disabled = false;
+            console.error('Error:', error);
+        });
+});
